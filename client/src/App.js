@@ -21,11 +21,10 @@ import { NavBar } from "./Components/index";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import axios from "axios";
-axios.defaults.baseURL = "https://localhost:3001/";
+axios.defaults.baseURL = "veganworlddeploy-production.up.railway.app:5562";
 
 function App() {
   //************************************* OCULTAR / MOSTRAR NAVBAR *********************************/
-  const location = useLocation();
 
   // const showNav = location.pathname !== "/login";
   // const showNav2 = location.pathname !== "/register";
