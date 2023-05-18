@@ -21,7 +21,7 @@ import { NavBar } from "./Components/index";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import axios from "axios";
-axios.defaults.baseURL = "veganworlddeploy-production.up.railway.app:5562";
+axios.defaults.baseURL = "http://veganworlddeploy-production.up.railway.app/";
 
 function App() {
   //************************************* OCULTAR / MOSTRAR NAVBAR *********************************/
