@@ -6,8 +6,11 @@ const server = express();
 
 server.use(express.json());
 server.use(morgan("dev"));
+const corsOptions = {
+  origin: "https://vegan-world-deploy.vercel.app/",
+};
 
-server.use(cors());
+app.use(cors(corsOptions));
 
 server.use("/", router);
 
