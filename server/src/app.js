@@ -10,7 +10,7 @@ const corsOptions = {
   origin: "https://vegan-world-deploy.vercel.app/",
 };
 
-app.use(cors(corsOptions));
+server.use(cors(corsOptions));
 
 server.use("/", router);
 
