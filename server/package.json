@@ -29,8 +29,7 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.31.0",
     "uuid": "^9.0.0",
-    "mercadopago": "^1.5.16",
-    "firebase": "^9.22.0"
+    "mercadopago": "^1.5.16"
 
   },
   "devDependencies": {
