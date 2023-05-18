@@ -1,0 +1,75 @@
+/************************************* DIVS ********************************/
+.mainContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.divLeft {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-left: 15px;
+}
+
+.divMid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.divRight {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-right: 15px;
+}
+
+/************************************* ELEMENTOS **********************************/
+
+.link {
+    text-align: center;
+}
+
+.tittle {
+    font-size: 15px;
+    text-shadow: 0 0 5px #F6FFDE;
+}
+
+.inputClass {
+    width: 500px;
+    position: relative;
+    opacity: 1;
+    right: 5px;
+    transition: all 0.5s ease;
+    background-color: #3D8361;
+    color: #F6FFDE;
+    border: transparent;
+    border-radius: 10px;
+    text-align: center;
+    outline: none;
+    height: 40px;
+    margin-right: 200px;
+}
+
+.inputClass::-webkit-search-cancel-button{
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.inputClass::placeholder{
+    color: #F6FFDE;
+}
+
+.fontIcon {
+    position: relative;
+    right: 230px;
+    color: #F6FFDE;
+    transition: transform 0.2s ease-in-out;
+}
+
+.fontIcon:hover {
+    transform: scale(1.5);
+}
