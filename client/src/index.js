@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import axios from "axios";
 import { ChakraProvider } from "@chakra-ui/react";
 
-axios.defaults.baseURL = "https://veganworlddeploy-production.up.railway.app";
+axios.defaults.baseURL = "https://veganworlddeploy-production.up.railway.app/";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ChakraProvider>
