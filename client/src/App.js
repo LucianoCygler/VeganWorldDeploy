@@ -19,10 +19,6 @@ import {
 
 import { NavBar } from "./Components/index";
 
-import { ChakraProvider } from "@chakra-ui/react";
-import axios from "axios";
-axios.defaults.baseURL = "https://veganworlddeploy-production.up.railway.app/";
-
 function App() {
   //************************************* OCULTAR / MOSTRAR NAVBAR *********************************/
 
@@ -31,7 +27,6 @@ function App() {
 
   return (
     <div className="App">
-      <ChakraProvider />
       {/* {showNav && <NavBar />} */}
       <NavBar />
       <Routes>
@@ -48,7 +43,6 @@ function App() {
         <Route path="/ResetPass" element={<Resetpass />} />
         <Route path="/About" element={<About />} />
       </Routes>
-      <ChakraProvider />
     </div>
   );
 }
