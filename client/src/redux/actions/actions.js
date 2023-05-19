@@ -45,7 +45,7 @@ import {
   GET_MP_LINK,
 } from "./Types/Types";
 
-const URL_SERVIDOR = "https://veganworlddeploy-production.up.railway.app/";
+const URL_SERVIDOR = "https://veganworlddeploy-production.up.railway.app";
 
 /*TODOS LOS PRODUCTOS*/
 export const getAllProducts = () => {
