@@ -43,8 +43,8 @@ class PaymentService {
       // ],
       back_urls: {
         failure: "/failure",
-        pending: "http://localhost:3000/MyOrders",
-        success: "http://localhost:3000/MyOrders",
+        pending: "https://vegan-world-deploy.vercel.app/MyOrders",
+        success: "https://vegan-world-deploy.vercel.app/MyOrders",
         //success: "/success",
       },
     };
