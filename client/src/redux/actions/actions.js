@@ -8,7 +8,7 @@ import {
   UPDATE_CART,
   FILTER_NAME_PRODUCT,
   FILTER_PRICE_PRODUCT,
-  STATE_LOGIN,
+  // STATE_LOGIN,
   GET_CUSTOMER_COMMENTS,
   SET_PAGE,
   CREATE_ORDER,
@@ -40,12 +40,13 @@ import {
   LOGOUT,
   GET_PRODUCT_REVIEWS,
   GET_ALL_CLIENTS,
-  SET_CREATED_ORDER_ID,
+  // SET_CREATED_ORDER_ID,
   CLEAN_CART,
   GET_MP_LINK,
+  GET_REVIEWS,
 } from "./Types/Types";
 
-// const URL_SERVIDOR = "https://veganworlddeploy-production.up.railway.app";
+// const URL_SERVIDOR = "http://localhost:3001";
 
 /*TODOS LOS PRODUCTOS*/
 export const getAllProducts = () => {
@@ -390,17 +391,17 @@ export const orderAndFilter = (filterByType, sort) => {
 };
 
 //OBTENER FAVORITOS
-export const getFavorites = (id_client) => {
-  return async function (dispatch) {
-    try {
-      const res = await axios.get(`/favorite/client/${id_client}`);
-      const clientFavorites = res.data;
-      return dispatch({ type: GET_FAVORITES, payload: clientFavorites });
-    } catch (error) {
-      console.log(error.response.data);
-    }
-  };
-};
+// export const getFavorites = (id_client) => {
+//   return async function (dispatch) {
+//     try {
+//       const res = await axios.get(`/favorite/client/${id_client}`);
+//       const clientFavorites = res.data;
+//       return dispatch({ type: GET_FAVORITES, payload: clientFavorites });
+//     } catch (error) {
+//       console.log(error.response.data);
+//     }
+//   };
+// };
 
 //CREAR FAVORITOS
 export const createFavoriteAction = (favorite) => {
@@ -428,7 +429,6 @@ export const deleteFavoriteAction = (product_id) => {
   };
 };
 
-//ELIMINAR FAVORITOS
 export const getClientAllFavorites = (client_id) => {
   return async function (dispatch) {
     try {
@@ -464,6 +464,17 @@ export const getProductReviews = (id_product) => {
     }
   };
 };
+export const getAllReviews = () => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get(`/review`);
+      const reviews = res.data;
+      return dispatch({ type: GET_REVIEWS, payload: reviews });
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+};
 
 export const getAllClients = () => {
   return async function (dispatch) {
@@ -482,7 +493,6 @@ export const getMercadoPagoLink = (emailAndProducts) => {
     try {
       const res = await axios.post(`/payment`, emailAndProducts);
       const MPLink = res.data;
-      console.log(res);
       return dispatch({ type: GET_MP_LINK, payload: MPLink });
     } catch (error) {
       console.log(error.response.data);

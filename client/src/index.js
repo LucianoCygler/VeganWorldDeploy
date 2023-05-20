@@ -6,21 +6,24 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import store from "./redux/store/store";
 import { Provider } from "react-redux";
-import axios from "axios";
 import { ChakraProvider } from "@chakra-ui/react";
 
+import axios from "axios";
+
 axios.defaults.baseURL = "https://veganworlddeploy-production.up.railway.app/";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
-  <ChakraProvider>
-    <Provider store={store}>
-      <BrowserRouter>
-        <React.StrictMode>
+  <Provider store={store}>
+    <BrowserRouter>
+      <React.StrictMode>
+        <ChakraProvider>
           <App />
-        </React.StrictMode>
-      </BrowserRouter>
-    </Provider>
-  </ChakraProvider>
+        </ChakraProvider>
+      </React.StrictMode>
+    </BrowserRouter>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
