@@ -162,7 +162,7 @@ function HomePage() {
                   marginTop={-4}
                   marginBottom={20}
                   onClick={() => {
-                    navigate("/ourproducts");
+                    navigate("/OurProducts");
                   }}
                 >
                   <Text fontSize={"3xl"}>Let's start</Text>
