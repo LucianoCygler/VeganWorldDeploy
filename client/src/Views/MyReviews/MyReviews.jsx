@@ -91,7 +91,7 @@ const MyReviews = () => {
         <>
           <Divider />
           <Box
-            paddingTop={10}
+            marginTop={"10em"}
             w="80%"
             bg="#d8d8d8  "
             margin="auto"

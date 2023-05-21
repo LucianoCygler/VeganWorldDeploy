@@ -39,9 +39,9 @@ function NavBar() {
     signOut(auth)
       .then(() => {
         console.log("Signed out successfully");
-        window.location.reload();
       })
       .catch((error) => console.log(error));
+    window.location.reload();
   };
   const location = useLocation();
   useEffect(() => {
