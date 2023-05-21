@@ -63,8 +63,6 @@ const MyReviews = () => {
   return (
     <Box
       marginTop={"0"}
-      h="100vh"
-      w="100%"
       backgroundImage={
         "https://wallpapercrafter.com/desktop/223806-vegan-vegan-cuisine-veggie-and-vegetarian-hd.jpg"
       }
@@ -91,9 +89,9 @@ const MyReviews = () => {
         <>
           <Divider />
           <Box
-            marginTop={"10em"}
+            paddingTop={10}
             w="80%"
-            bg="#d8d8d8"
+            bg="#d8d8d8  "
             margin="auto"
             shadow="0px 4px 1000px rgba(0, 0, 0, 0.2)"
             bg="rgba(216, 216, 216, 0.5);"
