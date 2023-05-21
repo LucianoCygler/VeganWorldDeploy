@@ -63,6 +63,8 @@ const MyReviews = () => {
   return (
     <Box
       marginTop={"0"}
+      h="100vh"
+      w="100%"
       backgroundImage={
         "https://wallpapercrafter.com/desktop/223806-vegan-vegan-cuisine-veggie-and-vegetarian-hd.jpg"
       }
