@@ -26,6 +26,7 @@ function Cart() {
   const [subTotal, setSubTotal] = useState(0);
   const [updateCart, setUpdateCart] = useState(cart);
   const [isOrderGenerated, setIsOrderGenerated] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   function products() {
     const idsProductos = [];
@@ -38,6 +39,14 @@ function Cart() {
     }
     return idsProductos;
   }
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
 
   function subTotalF() {
     let subTotalP = 0;
@@ -65,7 +74,11 @@ function Cart() {
         };
 
         try {
-          dispatch(createOrder(order));
+          dispatch(createOrder(order)).then((order) => {
+            const form = { user: user, order: order };
+            dispatch(sendEmail(form, "genOrder"));
+          });
+
           Pop_up(
             "success",
             "Order Ceated",
@@ -121,6 +134,14 @@ function Cart() {
 
   return (
     <div className={styles.mainContainer}>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Sign in</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <LoginForm handleCloseModal={handleCloseModal}></LoginForm>{" "}
+        </Modal.Body>
+      </Modal>
       {cart !== null && updateCart.length > 0 ? (
         <>
           {updateCart.map((product, index) => {
