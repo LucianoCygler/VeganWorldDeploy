@@ -8,6 +8,7 @@ import {
   createOrder,
   dropProduct,
   getMercadoPagoLink,
+  getUserDataByEmail,
   newCart,
   sendEmail,
 } from "../../redux/actions/actions";
@@ -40,6 +41,14 @@ function Cart() {
     }
     return idsProductos;
   }
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
 
   function subTotalF() {
     let subTotalP = 0;
@@ -105,6 +114,12 @@ function Cart() {
       unit_price: parseInt(product.precio),
     });
   });
+  const email = localStorage.getItem("email");
+
+  useEffect(() => {
+    dispatch(getUserDataByEmail(email));
+  }, [email]);
+
   useEffect(() => {
     dispatch(newCart(updateCart));
     setSubTotal(subTotalF());
@@ -124,6 +139,14 @@ function Cart() {
 
   return (
     <div className={styles.mainContainer}>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Sign in</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <LoginForm handleCloseModal={handleCloseModal}></LoginForm>{" "}
+        </Modal.Body>
+      </Modal>
       {cart !== null && updateCart.length > 0 ? (
         <>
           {updateCart.map((product, index) => {
