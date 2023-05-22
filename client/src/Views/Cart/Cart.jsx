@@ -18,6 +18,7 @@ import LoginForm from "../Login/LoginForm";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { Box, Text } from "@chakra-ui/react";
 
+//
 function Cart() {
   const navigate = useNavigate();
   const { user, cart } = useSelector((state) => state);
@@ -40,14 +41,6 @@ function Cart() {
     return idsProductos;
   }
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleShowModal = () => {
-    setShowModal(true);
-  };
-
   function subTotalF() {
     let subTotalP = 0;
     updateCart?.forEach((product) => (subTotalP += product.importe));
@@ -63,10 +56,10 @@ function Cart() {
     switch (name) {
       case "clear":
         return dispatch(dropProduct(id));
-      case "pay":
-        dispatch(cleanCart());
-        return alert("ir al metodo de pago");
+      // case "pay":
+      //   return alert("ir al metodo de pago");
       case "generateOrder":
+        dispatch(cleanCart());
         var order = {
           cliente_id: user?.id,
           importe: subTotalF(),
@@ -74,10 +67,7 @@ function Cart() {
         };
 
         try {
-          dispatch(createOrder(order)).then((order) => {
-            const form = { user: user, order: order };
-            dispatch(sendEmail(form, "genOrder"));
-          });
+          dispatch(createOrder(order));
 
           Pop_up(
             "success",
@@ -121,10 +111,10 @@ function Cart() {
   }, [updateCart]);
 
   useEffect(() => {
-    if (isOrderGenerated && user.id) {
+    if (isOrderGenerated && user?.id) {
       dispatch(getMercadoPagoLink(emailAndProducts));
     }
-  }, [isOrderGenerated, user.id]);
+  }, [isOrderGenerated, user?.id]);
 
   useEffect(() => {
     if (MPLink) {
@@ -134,14 +124,6 @@ function Cart() {
 
   return (
     <div className={styles.mainContainer}>
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Sign in</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <LoginForm handleCloseModal={handleCloseModal}></LoginForm>{" "}
-        </Modal.Body>
-      </Modal>
       {cart !== null && updateCart.length > 0 ? (
         <>
           {updateCart.map((product, index) => {
@@ -241,31 +223,36 @@ function Cart() {
               <h2>Order Summary</h2>
             </div>
             <div className={styles.btnOrder}>
-              <>
-                <p>
-                  <InfoOutlineIcon marginRight={1.5} />
-                  Once the order is created, you will be reditected to the
-                  payment window.
-                </p>
-                {!isOrderGenerated ? (
-                  <button
-                    className={styles.btnGenerate}
-                    onClick={handleClick}
-                    name="generateOrder"
-                    disabled={!user.id}
-                  >
-                    Generate order
-                  </button>
-                ) : (
-                  <button
-                    className={styles.btnGenerate}
-                    onClick={handleClick}
-                    name="pay"
-                  >
-                    Redirecting...
-                  </button>
-                )}
-              </>
+              {user.id ? (
+                <>
+                  <p>
+                    <InfoOutlineIcon marginRight={1.5} />
+                    Once the order is created, you will be reditected to the
+                    payment window.
+                  </p>
+                  {!isOrderGenerated ? (
+                    <button
+                      className={styles.btnGenerate}
+                      onClick={handleClick}
+                      name="generateOrder"
+                    >
+                      Generate order
+                    </button>
+                  ) : (
+                    <button
+                      className={styles.btnGenerate}
+                      onClick={handleClick}
+                      name="pay"
+                    >
+                      Redirecting...
+                    </button>
+                  )}
+                </>
+              ) : (
+                <Button variant="primary" onClick={handleShowModal}>
+                  Login to create Order!
+                </Button>
+              )}
             </div>
             <div className={styles.orderTotal}></div>
           </div>
