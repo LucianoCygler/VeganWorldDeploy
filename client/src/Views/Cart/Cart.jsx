@@ -18,6 +18,8 @@ import LoginForm from "../Login/LoginForm";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { Box, Text } from "@chakra-ui/react";
 
+
+//
 function Cart() {
   const navigate = useNavigate();
   const { user, cart } = useSelector((state) => state);
@@ -65,8 +67,8 @@ function Cart() {
         return dispatch(dropProduct(id));
       // case "pay":
       //   return alert("ir al metodo de pago");
-      case "generateOrder":
-        dispatch(cleanCart());
+        case "generateOrder":
+          dispatch(cleanCart());
         var order = {
           cliente_id: user?.id,
           importe: subTotalF(),
