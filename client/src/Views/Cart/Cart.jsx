@@ -26,7 +26,6 @@ function Cart() {
   const [subTotal, setSubTotal] = useState(0);
   const [updateCart, setUpdateCart] = useState(cart);
   const [isOrderGenerated, setIsOrderGenerated] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   function products() {
     const idsProductos = [];
@@ -39,14 +38,6 @@ function Cart() {
     }
     return idsProductos;
   }
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleShowModal = () => {
-    setShowModal(true);
-  };
 
   function subTotalF() {
     let subTotalP = 0;
@@ -130,14 +121,6 @@ function Cart() {
 
   return (
     <div className={styles.mainContainer}>
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Sign in</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <LoginForm handleCloseModal={handleCloseModal}></LoginForm>{" "}
-        </Modal.Body>
-      </Modal>
       {cart !== null && updateCart.length > 0 ? (
         <>
           {updateCart.map((product, index) => {
@@ -237,37 +220,31 @@ function Cart() {
               <h2>Order Summary</h2>
             </div>
             <div className={styles.btnOrder}>
-              {user.id ? (
-                <>
-                  <p>
-                    <InfoOutlineIcon marginRight={1.5} />
-                    Once the order is created, you will be reditected to the
-                    payment window.
-                  </p>
-                  {!isOrderGenerated ? (
-                    <button
-                      className={styles.btnGenerate}
-                      onClick={handleClick}
-                      name="generateOrder"
-                      disabled={!user.id}
-                    >
-                      Generate order
-                    </button>
-                  ) : (
-                    <button
-                      className={styles.btnGenerate}
-                      onClick={handleClick}
-                      name="pay"
-                    >
-                      Redirecting...
-                    </button>
-                  )}
-                </>
-              ) : (
-                <Button variant="primary" onClick={handleShowModal}>
-                  Login to create Order!
-                </Button>
-              )}
+              <>
+                <p>
+                  <InfoOutlineIcon marginRight={1.5} />
+                  Once the order is created, you will be reditected to the
+                  payment window.
+                </p>
+                {!isOrderGenerated ? (
+                  <button
+                    className={styles.btnGenerate}
+                    onClick={handleClick}
+                    name="generateOrder"
+                    disabled={!user.id}
+                  >
+                    Generate order
+                  </button>
+                ) : (
+                  <button
+                    className={styles.btnGenerate}
+                    onClick={handleClick}
+                    name="pay"
+                  >
+                    Redirecting...
+                  </button>
+                )}
+              </>
             </div>
             <div className={styles.orderTotal}></div>
           </div>
