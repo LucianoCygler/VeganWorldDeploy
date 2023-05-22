@@ -65,8 +65,8 @@ function Cart() {
         return dispatch(dropProduct(id));
       // case "pay":
       //   return alert("ir al metodo de pago");
-        case "generateOrder":
-          dispatch(cleanCart());
+      case "generateOrder":
+        dispatch(cleanCart());
         var order = {
           cliente_id: user?.id,
           importe: subTotalF(),
@@ -74,10 +74,7 @@ function Cart() {
         };
 
         try {
-          dispatch(createOrder(order)).then((order) => {
-            const form = { user: user, order: order };
-            dispatch(sendEmail(form, "genOrder"));
-          });
+          dispatch(createOrder(order));
 
           Pop_up(
             "success",
