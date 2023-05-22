@@ -18,8 +18,6 @@ import LoginForm from "../Login/LoginForm";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { Box, Text } from "@chakra-ui/react";
 
-
-//
 function Cart() {
   const navigate = useNavigate();
   const { user, cart } = useSelector((state) => state);
@@ -65,10 +63,10 @@ function Cart() {
     switch (name) {
       case "clear":
         return dispatch(dropProduct(id));
-      // case "pay":
-      //   return alert("ir al metodo de pago");
-        case "generateOrder":
-          dispatch(cleanCart());
+      case "pay":
+        dispatch(cleanCart());
+        return alert("ir al metodo de pago");
+      case "generateOrder":
         var order = {
           cliente_id: user?.id,
           importe: subTotalF(),
@@ -77,7 +75,6 @@ function Cart() {
 
         try {
           dispatch(createOrder(order));
-
           Pop_up(
             "success",
             "Order Ceated",
@@ -120,10 +117,10 @@ function Cart() {
   }, [updateCart]);
 
   useEffect(() => {
-    if (isOrderGenerated && user?.id) {
+    if (isOrderGenerated && user.id) {
       dispatch(getMercadoPagoLink(emailAndProducts));
     }
-  }, [isOrderGenerated, user?.id]);
+  }, [isOrderGenerated, user.id]);
 
   useEffect(() => {
     if (MPLink) {
