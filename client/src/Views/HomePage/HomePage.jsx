@@ -3,7 +3,9 @@ import style from "./HomePage.module.css";
 import {
   getAllProducts,
   getAllReviews,
+  getClientData,
   getClientReviews,
+  getUserDataByEmail,
 } from "../../redux/actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination, Products } from "../../Components/index";
@@ -36,15 +38,59 @@ const images = [
   "https://images.pexels.com/photos/3669638/pexels-photo-3669638.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   "https://images.pexels.com/photos/1351238/pexels-photo-1351238.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 ];
-const settings = {
-  dots: true,
-  infinite: true,
-  autoplay: true,
-  autoplaySpeed: 5000, // Tiempo de espera entre imágenes (en milisegundos)
-  speed: 900, // Velocidad de transición entre imágenes (en milisegundos)
-  slidesToShow: 2, // Número de imágenes a mostrar al mismo tiempo
-  slidesToScroll: 1, // Número de imágenes a desplazar al avanzar o retroceder
+
+const MySlider = () => {
+  const [slidesToShow, setSlidesToShow] = useState(2);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        // Ajusta el valor según tus necesidades
+        setSlidesToShow(1);
+      } else {
+        setSlidesToShow(2);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Asegura que la configuración inicial sea correcta
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  const settings = {
+    dots: true,
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 5000, // Tiempo de espera entre imágenes (en milisegundos)
+    speed: 900, // Velocidad de transición entre imágenes (en milisegundos)
+    slidesToShow: slidesToShow, // Número de imágenes a mostrar al mismo tiempo
+    slidesToScroll: 1, // Número de imágenes a desplazar al avanzar o retroceder
+  };
+  return (
+    <Slider {...settings}>
+      {images.map((image, index) => (
+        <div key={index}>
+          <Box>
+            <Image
+              shadow="2px 2px 4px rgba(0, 0, 0, 1)"
+              color={"white"}
+              marginLeft={"2em"}
+              w={"95%"}
+              h={"35vh"}
+              maxH="95vh"
+              src={image}
+              alt={`Slide ${index + 1}`}
+              style={{ opacity: 0.7 }}
+            />{" "}
+          </Box>
+        </div>
+      ))}
+    </Slider>
+  );
 };
+
 function HomePage() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
@@ -54,9 +100,15 @@ function HomePage() {
   const navigate = useNavigate();
   const shuffledReviews = shuffle(allReviews);
   const randomReviews = shuffledReviews.slice(0, 4);
+  const user = useSelector((state) => state.user);
 
   const location = useLocation();
   const showLogin = location.state && location.state.showLogin;
+
+  const email = localStorage.getItem("email");
+  useEffect(() => {
+    dispatch(getUserDataByEmail(email));
+  }, [email]);
 
   useEffect(() => {
     dispatch(getAllReviews());
@@ -74,13 +126,13 @@ function HomePage() {
       scrollBehavior={"smooth"}
       paddingTop={200}
       margin={0}
-      backgroundImage={
-        "https://wallpapercrafter.com/desktop/223806-vegan-vegan-cuisine-veggie-and-vegetarian-hd.jpg"
-      }
+      backgroundImage={"https://wallpaperaccess.com/full/1812875.jpg"}
+      bgSize={"cover"}
+      bgRepeat={"no-repeat"}
     >
       <ModalLogin show={showLogin}></ModalLogin>
       <Box>
-        <Box paddingTop={1}>
+        <Box paddingTop={1} marginBottom={"2em"}>
           <Flex direction={"row"} justify={"center"}>
             {/* <Box width={"80%"} height="700" bg="#d8d8d8">
             <Image
@@ -103,8 +155,6 @@ function HomePage() {
         >
           <Card
             direction={{ base: "column", sm: "row" }}
-            overflow="hidden"
-            variant="outline"
             justifyContent={"center"}
             alignContent={"center"}
             height={400}
@@ -115,13 +165,13 @@ function HomePage() {
                 <Heading
                   size="md"
                   fontSize="5xl"
-                  paddingTop={30}
+                  marginTop={30}
                   color="white"
                   textShadow="2px 2px 4px rgba(0, 0, 0, 0.4)"
                 >
                   <Text> Welcome to your Vegan World!</Text>
                 </Heading>
-                <Box marginLeft={500} wordBreak="break-word" w={"50%"}>
+                <Box wordBreak="break-word" justify={"center"}>
                   <Text
                     marginTop={10}
                     py="2"
@@ -257,182 +307,172 @@ function HomePage() {
           )}
         </>
       </Box>
+      <Box overflowWrap={"wrap"}></Box>
       <div data-aos="fade-left" data-aos-duration="2000">
-        <Box
-          width={"100%"}
-          height={400}
-          bg={"none"}
-          padding={1}
-          marginBottom={300}
-          flexWrap={"wrap"}
+        <Grid
+          templateColumns={{
+            base: "repeat(1, 1fr)",
+            sm: "repeat(1, 1fr)",
+            md: "repeat(2, 1fr)",
+            lg: "repeat(2, 1fr)",
+            xl: "repeat(3, 1fr)",
+            "2xl": "repeat(4, 1fr)",
+          }}
+          gap={4}
+          marginBottom="3em"
         >
-          <Grid
-            templateColumns={"repeat(4,1fr)"}
-            templateRows={"repeat(2,1fr)"}
+          <Box
+            bg="white"
+            margin="2px"
+            borderRadius="120px 20px"
+            shadow="2px 2px 4px rgba(0, 0, 0, 1)"
           >
-            <Box
-              bg={"white"}
-              margin="2px"
-              borderRadius={"120px 20px"}
-              shadow="2px 2px 4px rgba(0, 0, 0, 1)"
-            >
-              <Image
-                padding="1em  "
-                marginLeft={20}
-                maxW={{ base: "100%", sm: "330px" }}
-                src="https://static.vecteezy.com/system/resources/previews/004/542/032/non_2x/young-woman-sitting-on-floor-working-with-laptop-cartoon-style-illustration-isolated-on-white-background-vector.jpg"
-              ></Image>
-              <Text fontSize="4xl" marginTop={"64px"}>
-                <Text as="b">Order</Text> Online
-              </Text>
-            </Box>{" "}
-            <Box
-              shadow="2px 2px 4px rgba(0, 0, 0, 1)"
-              bg={"white"}
-              margin="2px"
-              borderRadius={"120px 20px"}
-            >
-              <Image
-                padding="1em  "
-                marginLeft={20}
-                paddingTop={5}
-                maxW={{ base: "100%", sm: "330px" }}
-                src="https://img.freepik.com/vector-gratis/hombre-montando-scooter-sobre-fondo-blanco_1308-46379.jpg"
-              ></Image>
-              <Text fontSize="4xl" marginTop={20}>
-                <Text as="b">Fast</Text> shipping
-              </Text>
-            </Box>
-            <Box
-              shadow="2px 2px 4px rgba(0, 0, 0, 1)"
-              bg={"white"}
-              margin="2px"
-              borderRadius={"120px 20px"}
-              paddingLeft={"3em"}
-            >
-              <Image
-                padding="2em  "
-                marginLeft={19.5}
-                maxW={{ base: "100%", sm: "370px" }}
-                src="https://media.istockphoto.com/id/1152445566/es/vector/el-repartidor-est%C3%A1-sosteniendo-una-caja-de-paquetes.jpg?s=612x612&w=0&k=20&c=cUSmSP-hnxJSOTnGoNxstqDh9UGZyM2zE0OEebXt_UE="
-              ></Image>{" "}
-              <Text fontSize="4xl" marginRight={20} paddingLeft={"1em"}>
-                <Text as="b">Receive</Text> the order at the door of your house
-              </Text>
-            </Box>
-            <Box
-              shadow="2px 2px 4px rgba(0, 0, 0, 1)"
-              bg={"white"}
-              margin="2px"
-              borderRadius={"120px 20px"}
-              paddingLeft={"3em"}
-            >
-              <Image
-                padding="2em"
-                marginLeft={19.5}
-                maxW={{ base: "100%", sm: "370px" }}
-                src="https://media.istockphoto.com/id/1282103104/es/vector/ni%C3%B1a-comiendo-frutas-alimentos-saludables-mujer-aislada-en-dibujos-animados-planos-la.jpg?s=170667a&w=0&k=20&c=HpUGp0dItcE_lAzyYKe70xrm5xc0NnzyiGWy8el5Q4A="
-              ></Image>{" "}
-              <Text fontSize="4xl" marginRight={20}>
-                <Text as="b">Enjoy</Text> your order from Vegan World!
-              </Text>
-            </Box>
-          </Grid>
-        </Box>
+            <Image
+              padding="1em"
+              marginLeft={20}
+              maxW={{ base: "100%", sm: "330px" }}
+              src="https://static.vecteezy.com/system/resources/previews/004/542/032/non_2x/young-woman-sitting-on-floor-working-with-laptop-cartoon-style-illustration-isolated-on-white-background-vector.jpg"
+            />
+            <Text fontSize="4xl" marginTop={4} fontWeight="bold">
+              Order Online
+            </Text>
+          </Box>
+          <Box
+            bg="white"
+            margin="2px"
+            borderRadius="120px 20px"
+            shadow="2px 2px 4px rgba(0, 0, 0, 1)"
+          >
+            <Image
+              padding="1em"
+              marginLeft={20}
+              paddingTop={5}
+              maxW={{ base: "100%", sm: "330px" }}
+              src="https://img.freepik.com/vector-gratis/hombre-montando-scooter-sobre-fondo-blanco_1308-46379.jpg"
+            />
+            <Text fontSize="4xl" marginTop={4} fontWeight="bold">
+              Fast Shipping
+            </Text>
+          </Box>
+          <Box
+            bg="white"
+            margin="2px"
+            borderRadius="120px 20px"
+            shadow="2px 2px 4px rgba(0, 0, 0, 1)"
+          >
+            <Image
+              padding="2em"
+              marginLeft={19.5}
+              maxW={{ base: "100%", sm: "370px" }}
+              src="https://media.istockphoto.com/id/1152445566/es/vector/el-repartidor-est%C3%A1-sosteniendo-una-caja-de-paquetes.jpg?s=612x612&w=0&k=20&c=cUSmSP-hnxJSOTnGoNxstqDh9UGZyM2zE0OEebXt_UE="
+            />
+            <Text fontSize="4xl" marginTop={4} fontWeight="bold">
+              Receive the order at the door of your house
+            </Text>
+          </Box>
+          <Box
+            bg="white"
+            margin="2px"
+            borderRadius="120px 20px"
+            shadow="2px 2px 4px rgba(0, 0, 0, 1)"
+          >
+            <Image
+              padding="2em"
+              marginLeft={19.5}
+              maxW={{ base: "100%", sm: "370px" }}
+              src="https://media.istockphoto.com/id/1282103104/es/vector/ni%C3%B1a-comiendo-frutas-alimentos-saludables-mujer-aislada-en-dibujos-animados-planos-la.jpg?s=170667a&w=0&k=20&c=HpUGp0dItcE_lAzyYKe70xrm5xc0NnzyiGWy8el5Q4A="
+            />
+            <Text fontSize="4xl" marginTop={4} fontWeight="bold">
+              Enjoy your order from Vegan World!
+            </Text>
+          </Box>
+        </Grid>
       </div>
-      <Slider {...settings}>
-        {images.map((image, index) => (
-          <div key={index}>
-            <Box>
-              <Image
-                shadow="2px 2px 4px rgba(0, 0, 0, 1)"
-                color={"white"}
-                marginLeft={"2em"}
-                w={"95%"}
-                h={"65vh"}
-                maxH="95vh"
-                src={image}
-                alt={`Slide ${index + 1}`}
-                style={{ opacity: 0.7 }}
-              />{" "}
-            </Box>
-          </div>
-        ))}
-      </Slider>
+      <MySlider />
       <footer class="footer-distributed">
-        <div class="footer-left">
-          <h3>
-            <span>Vegan</span>World
-          </h3>
+        <Grid
+          templateColumns={{
+            base: "1fr",
+            sm: "repeat(1, 100%)",
+            md: "repeat(2, 50%)",
+            lg: "repeat(3, 42%)",
+            xl: "repeat(3, 42%)",
+          }}
+        >
+          <div class="footer-left">
+            <h3>
+              <span>Vegan</span>World
+            </h3>
 
-          <p class="footer-links">
-            <a href="#" class="link-1">
-              Home
-            </a>
+            <p class="footer-links">
+              <a href="#" class="link-1">
+                Home
+              </a>
 
-            <a href="#">Blog</a>
+              <a href="#">Blog</a>
 
-            <a href="#">Pricing</a>
+              <a href="#">Pricing</a>
 
-            <a href="#">About</a>
+              <a href="#">About</a>
 
-            <a href="#">Faq</a>
+              <a href="#">Faq</a>
 
-            <a href="#">Contact</a>
-          </p>
-
-          <p class="footer-company-name">VeganWorld © 2023</p>
-        </div>
-
-        <div class="footer-center">
-          <div>
-            <i class="fa fa-map-marker"></i>
-            <p>
-              <span>Av. Rivadavia 9423</span> Capital Federal, Buenos Aires
+              <a href="#">Contact</a>
             </p>
+
+            <p class="footer-company-name">VeganWorld © 2023</p>
           </div>
 
-          <div>
-            <i class="fa fa-phone"></i>
-            <PhoneIcon marginRight="1em"></PhoneIcon>
-            <p>+54 9 1122309876</p>
+          <div class="footer-center">
+            <div>
+              <i class="fa fa-map-marker"></i>
+              <p>
+                <span>Av. Rivadavia 9423</span> Capital Federal, Buenos Aires
+              </p>
+            </div>
+
+            <div>
+              <i class="fa fa-phone"></i>
+              <PhoneIcon marginRight="1em"></PhoneIcon>
+              <p>+54 9 1122309876</p>
+            </div>
+
+            <div>
+              <i class="fa fa-envelope"></i>
+              <p>
+                <a href="mailto:support@company.com">veganworld@gmail.com</a>
+              </p>
+            </div>
           </div>
 
-          <div>
-            <i class="fa fa-envelope"></i>
-            <p>
-              <a href="mailto:support@company.com">veganworld@gmail.com</a>
+          <div class="footer-right">
+            <p class="footer-company-about">
+              <span>About the company</span>
+              Making it easier to be Vegan and order food!
             </p>
-          </div>
-        </div>
 
-        <div class="footer-right">
-          <p class="footer-company-about">
-            <span>About the company</span>
-            Making it easier to be Vegan and order food!
-          </p>
-
-          <div class="footer-icons">
-            <a href="#">
-              <SocialIcon
-                url="https://facebook.com/VeganWorld"
-                style={{ height: 30, width: 30 }}
-              />
-            </a>
-            <a href="#">
-              <SocialIcon
-                url="https://twitter.com/VeganWorld"
-                style={{ height: 30, width: 30 }}
-              />
-            </a>
-            <a href="#">
-              <SocialIcon
-                url="https://github.com/LucianoCygler/VeganWorld"
-                style={{ height: 30, width: 30 }}
-              />
-            </a>
+            <div class="footer-icons">
+              <a href="#">
+                <SocialIcon
+                  url="https://facebook.com/VeganWorld"
+                  style={{ height: 30, width: 30 }}
+                />
+              </a>
+              <a href="#">
+                <SocialIcon
+                  url="https://twitter.com/VeganWorld"
+                  style={{ height: 30, width: 30 }}
+                />
+              </a>
+              <a href="#">
+                <SocialIcon
+                  url="https://github.com/LucianoCygler/VeganWorld"
+                  style={{ height: 30, width: 30 }}
+                />
+              </a>
+            </div>
           </div>
-        </div>
+        </Grid>
       </footer>
     </Box>
   );

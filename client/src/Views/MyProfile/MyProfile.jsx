@@ -18,14 +18,44 @@ import {
   Image,
   Text,
   Button,
+  Avatar,
 } from "@chakra-ui/react";
+
+import axios from "axios";
+
+const uploadImage = async (file) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "my_upload_preset");
+
+    const response = await axios.post(
+      "https://api.cloudinary.com/v1_1/da6d9ru3s/upload",
+      formData
+    );
+    console.log("Imagen subida:", response.data.secure_url);
+    return response.data.secure_url;
+  } catch (error) {
+    alert("Error al cargar la imagen:", error);
+    return null;
+  }
+};
 
 const MyData = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const { nombre, apellido, email, direccion, telefono, dni, ciudad, id } =
-    user;
+  const {
+    nombre,
+    apellido,
+    email,
+    direccion,
+    telefono,
+    dni,
+    ciudad,
+    id,
+    imagen,
+  } = user;
   const [editMode, setEditMode] = useState(false);
   const [editedName, setEditedName] = useState(nombre || "");
   const [editedSurname, setEditedSurname] = useState(apellido || "");
@@ -36,7 +66,6 @@ const MyData = () => {
   const [editedAddress, setEditedAddress] = useState(direccion || "");
   const [profileImage, setProfileImage] = useState(null);
   const [selectedUser, setselectedUser] = useState(user);
-
   const emailCurrent = localStorage.getItem("email");
 
   const [showModal, setShowModal] = useState(false);
@@ -58,22 +87,35 @@ const MyData = () => {
     window.location.reload();
   };
 
-  const handleSaveUser = () => {
-    const newUser = {
-      nombre: editedName,
-      apellido: editedSurname,
-      email: editedEmail,
-      ciudad: editedCity,
-      telefono: editedPhone,
-      direccion: editedAddress,
-      DNI: editedDNI,
-    };
-    setselectedUser(newUser);
-    dispatch(updateClientData(id, newUser));
-    alert("Client Data updated");
-    setEditMode(false);
-  };
+  const handleSaveUser = async () => {
+    try {
+      if (profileImage) {
+        // Subir imagen a Cloudinary
+        const url = await uploadImage(profileImage);
+        if (url) {
+          var imageUrl = url;
+        }
+      }
 
+      const newUser = {
+        nombre: editedName,
+        apellido: editedSurname,
+        email: editedEmail,
+        ciudad: editedCity,
+        telefono: editedPhone,
+        direccion: editedAddress,
+        DNI: editedDNI,
+        imagen: imageUrl,
+      };
+
+      setselectedUser(newUser);
+      dispatch(updateClientData(id, newUser));
+      alert("Client Data updated");
+      setEditMode(false);
+    } catch (error) {
+      alert("Error al guardar los datos del cliente");
+    }
+  };
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -163,7 +205,7 @@ const MyData = () => {
                   type="text"
                   value={editedAddress}
                   onChange={(e) => setEditedAddress(e.target.value)}
-                />
+                />{" "}
               </div>
               <input
                 className={style.input8B}
@@ -189,10 +231,19 @@ const MyData = () => {
               >
                 <h1>My Profile</h1>
               </Text>{" "}
-              {profileImage ? (
-                <img className={style.img} src={profileImage} alt="Profile" />
+              {imagen ? (
+                <Image
+                  w={"220px"}
+                  h={"220px"}
+                  borderRadius={"50%"}
+                  alt="Default Profile"
+                  src={imagen}
+                  margin={"auto"}
+                  marginBottom={"3em"}
+                />
               ) : (
                 <Box w={"30%"} margin={"auto"} marginBottom={"3em"}>
+                  {/* <Avatar bg="teal.500" size={60} /> */}
                   <Image
                     borderRadius={100}
                     src="https://bit.ly/ryan-florence"

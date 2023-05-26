@@ -29,11 +29,17 @@ const OrderDetail = ({ order, cancelRef }) => {
 
   return (
     <AccordionItem
-      bg={"rgba(29, 92, 99, 0.8)"}
       textColor={"white"}
       fontWeight={"medium"}
+      bg={"grey"}
+      borderRadius={"2xl"}
     >
-      <AccordionButton mb={2} boxShadow={"dark-lg"} borderRadius={"2xl"}>
+      <AccordionButton
+        mb={2}
+        boxShadow={"dark-lg"}
+        borderRadius={"2xl"}
+        bg={"grey"}
+      >
         {/* CABEZERA DE LA ORDEN */}
         <Stack
           flex
@@ -41,16 +47,29 @@ const OrderDetail = ({ order, cancelRef }) => {
           justify={"space-around"}
           shouldWrapChildren={true}
           m={"auto"}
-          spacing={"10"}
+          marginLeft={2}
+          spacing={"40"}
         >
-          <Box as="span" flex="1" textAlign="left" fontWeight={"bold"}>
-            Order: {id}
+          <Box
+            as="span"
+            flex="1"
+            textAlign="left"
+            fontWeight={"bold"}
+            marginLeft={"3em"}
+          >
+            Order {id}
           </Box>
           <Box as="span" flex="1" textAlign="left" fontWeight={"bold"}>
-            Date: {fecha}
+            {fecha}
           </Box>
-          <Box as="span" flex="1" textAlign="left" fontWeight={"bold"}>
-            Total Amount: $ {importe}
+          <Box
+            paddingLeft={"40em"}
+            as="span"
+            flex="1"
+            textAlign="left"
+            fontWeight={"bold"}
+          >
+            $ {importe}
           </Box>
         </Stack>
         {/* BOTON DE CANCELAR */}

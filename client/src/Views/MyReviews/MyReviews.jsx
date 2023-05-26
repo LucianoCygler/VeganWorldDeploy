@@ -10,7 +10,7 @@ import styles from "./MyReviews.module.css";
 import { useNavigate } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import LoginForm from "../Login/LoginForm";
-import { Box, Flex, Grid, GridItem, Img } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Heading, Img } from "@chakra-ui/react";
 import "./MyReviews.css";
 import { Avatar, AvatarBadge, AvatarGroup } from "@chakra-ui/react";
 import { Divider } from "@chakra-ui/react";
@@ -64,9 +64,7 @@ const MyReviews = () => {
     <Box
       marginTop={"0"}
       minH="100vh"
-      backgroundImage={
-        "https://wallpapercrafter.com/desktop/223806-vegan-vegan-cuisine-veggie-and-vegetarian-hd.jpg"
-      }
+      backgroundImage={"https://wallpaperaccess.com/full/1812875.jpg"}
     >
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
@@ -89,6 +87,7 @@ const MyReviews = () => {
       ) : (
         <>
           <Divider />
+
           <Box
             paddingTop={10}
             minH="80vh"
@@ -100,6 +99,15 @@ const MyReviews = () => {
             marginTop={"10em"}
             borderRadius={"35px"}
           >
+            <Box>
+              <Heading
+                fontSize={"80px"}
+                color={"white"}
+                textShadow="2px 2px 4px rgba(0, 0, 0, 0.4)"
+              >
+                Reviews
+              </Heading>
+            </Box>
             {reviews ? (
               reviews.map((review) => {
                 return (
@@ -107,7 +115,7 @@ const MyReviews = () => {
                     <Box
                       display="inline-block"
                       marginRight="1.5em"
-                      paddingTop="8em"
+                      paddingTop="5em"
                       onClick={() => showPopupHandler(review)}
                     >
                       <div class="cardReview">
@@ -154,7 +162,6 @@ const MyReviews = () => {
               </div>
             )}
           </Box>
-
           {/* // reviews.map((review) => (
             //   <div
             //     key={review.id}
@@ -169,7 +176,6 @@ const MyReviews = () => {
           {/* // ) : (
             
           // )} */}
-
           {isPopupOpen && (
             <>
               <div className={styles.overlay} onClick={closePopup} />
