@@ -27,13 +27,15 @@ import {
   DELETE_FAVORITE,
   GET_PRODUCT_REVIEWS,
   GET_ALL_CLIENTS,
+  DELETE_CLIENT,
   SET_CREATED_ORDER_ID,
   CLEAN_CART,
   GET_MP_LINK,
   GET_REVIEWS,
-	CHANGE_LABEL,
+  CHANGE_LABEL,
   UPDATE_ADDRESS,
   CLEAN_ADDRESS,
+  GET_ORDERS,
 } from "../actions/Types/Types";
 const carritoa = JSON.parse(localStorage.getItem("carrito")) || [];
 const productsa = JSON.parse(localStorage.getItem("products")) || [];
@@ -47,6 +49,7 @@ const initialState = {
   customerComments: [],
   currentPage: 0,
   itemsPerPage: 1,
+  allOrders: [],
   orders: [],
   order: {},
   success: {},
@@ -59,128 +62,134 @@ const initialState = {
   isAuthenticated: false,
   productReviews: [],
   allClients: [],
+  deletedClient: "",
   MPLink: "",
   allReviews: [],
-	labels: {
-		Graph: false,
-		Clients: false,
-		Products: false,
-		Reviews: false,
-		Orders: false,
-	},
+  labels: {
+    Graph: false,
+    Clients: false,
+    Products: false,
+    Reviews: false,
+    Orders: false,
+  },
   address: address,
   // createdOrderId: null,
 };
 
 export default function rootReducer(state = initialState, action) {
-	switch (action.type) {
-		case GET_CLIENT_DATA:
-			return {
-				...state,
-				user: action.payload,
-			};
-		case GET_CLIENT_DATA:
-			return {
-				...state,
-				user: {},
-			};
+  switch (action.type) {
+    case GET_CLIENT_DATA:
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case GET_CLIENT_DATA:
+      return {
+        ...state,
+        user: {},
+      };
 
-		case GET_CLIENT_REVIEWS:
-			return {
-				...state,
-				reviews: [...action.payload],
-			};
+    case GET_CLIENT_REVIEWS:
+      return {
+        ...state,
+        reviews: [...action.payload],
+      };
     case GET_ALL_PRODUCTS:
-      localStorage.setItem("products", JSON.stringify([...action.payload]));
+      // localStorage.setItem("products", JSON.stringify([...action.payload]));
       return {
         ...state,
         products: [...action.payload],
         filteredProducts: [...action.payload],
       };
-		case GET_PRODUCT_BY_ID:
-			return { ...state, product: [action.payload] };
+    case GET_PRODUCT_BY_ID:
+      return { ...state, product: [action.payload] };
 
-		case VALIDATE_LOGIN:
-			return {
-				...state,
-				user: action.payload,
-			};
-		case LOGIN:
-			return {
-				...state,
-				isAuthenticated: true,
-				// Reset other relevant authentication state properties upon logout
-			};
-		case LOGOUT:
-			return {
-				...state,
-				isAuthenticated: false,
-				user: {},
-				// Reset other relevant authentication state properties upon logout
-			};
-		// Other authentication-related action cases
+    case VALIDATE_LOGIN:
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case LOGIN:
+      return {
+        ...state,
+        isAuthenticated: true,
+        // Reset other relevant authentication state properties upon logout
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: {},
+        // Reset other relevant authentication state properties upon logout
+      };
+    // Other authentication-related action cases
 
-		case CLEAN_DETAIL:
-			return { ...state, product: [] };
+    case CLEAN_DETAIL:
+      return { ...state, product: [] };
 
-		case FILTER_NAME_PRODUCT:
-			const filterProducts = state.products.filter((product) => {
-				const productName = product.nombre.toLowerCase();
-				if (action.payload === "") return state.products;
-				return productName.includes(action.payload.toLowerCase());
-			});
-			return { ...state, products: filterProducts };
+    case FILTER_NAME_PRODUCT:
+      const filterProducts = state.products.filter((product) => {
+        const productName = product.nombre.toLowerCase();
+        if (action.payload === "") return state.products;
+        return productName.includes(action.payload.toLowerCase());
+      });
+      return { ...state, products: filterProducts };
 
-		case ADD_CART:
-			if (!state.cart.find((product) => product.id === action.payload.id)) {
-				return {
-					...state,
-					cart: [
-						...state.cart,
-						{
-							id: action.payload.id,
-							nombre: action.payload.nombre,
-							descripcion: action.payload.descripcion,
-							precio: action.payload.precio,
-							cantidad: action.quantity,
-							importe: action.payload.precio * action.quantity,
-							imagen: action.payload.imagen,
-						},
-					],
-				};
-			} else {
-				throw Error("You product is already in Cart!");
-			}
+    case ADD_CART:
+      if (!state.cart.find((product) => product.id === action.payload.id)) {
+        return {
+          ...state,
+          cart: [
+            ...state.cart,
+            {
+              id: action.payload.id,
+              nombre: action.payload.nombre,
+              descripcion: action.payload.descripcion,
+              precio: action.payload.precio,
+              cantidad: action.quantity,
+              importe: action.payload.precio * action.quantity,
+              imagen: action.payload.imagen,
+            },
+          ],
+        };
+      } else {
+        throw Error("You product is already in Cart!");
+      }
 
-		case UPDATE_CART:
-			return { ...state, cart: action.payload };
-		case CLEAN_CART:
-			return {
-				...state,
-				cart: [...action.payload],
-			};
-		case DROP_PRODUCT:
-			return {
-				...state,
-				cart: [
-					...state.cart.filter(
-						(product) => Number(product.id) !== Number(action.payload)
-					),
-				],
-			};
+    case UPDATE_CART:
+      return { ...state, cart: action.payload };
+    case CLEAN_CART:
+      return {
+        ...state,
+        cart: [...action.payload],
+      };
+    case DROP_PRODUCT:
+      return {
+        ...state,
+        cart: [
+          ...state.cart.filter(
+            (product) => Number(product.id) !== Number(action.payload)
+          ),
+        ],
+      };
 
-		case GET_CUSTOMER_COMMENTS:
-			return { ...state, customerComments: [action.payload] };
+    case GET_CUSTOMER_COMMENTS:
+      return { ...state, customerComments: [action.payload] };
 
-		case SET_PAGE:
-			return { ...state, currentPage: [action.payload] };
+    case SET_PAGE:
+      return { ...state, currentPage: [action.payload] };
     case CREATE_ORDER:
       return { ...state, success: action.payload };
-		case GET_ORDER_BY_ID:
-			return { ...state, order: [action.payload] };
+    case GET_ORDER_BY_ID:
+      return { ...state, order: [action.payload] };
+    case GET_ORDERS:
+      return {
+        ...state,
+        allOrders: [...action.payload],
+      };
 
-		case GET_CLIENT_ORDERS:
-			return { ...state, clientOrders: action.payload };
+    case GET_CLIENT_ORDERS:
+      return { ...state, clientOrders: action.payload };
 
     case DELETE_ORDER:
       // const orderId = action.payload;
@@ -192,28 +201,28 @@ export default function rootReducer(state = initialState, action) {
         ],
         orderDelete: [action.payload],
       };
-		case UPDATE_REVIEW:
-			const { id, titulo, descripcion } = action.payload;
-			const fecha = new Date().toISOString().slice(0, 10);
-			const updatedReviews = state.reviews.map((review) => {
-				if (review.id === id) {
-					return {
-						...review,
-						titulo,
-						descripcion,
-						fecha,
-					};
-				}
-				return review;
-			});
-			return {
-				...state,
-				reviews: updatedReviews,
-			};
+    case UPDATE_REVIEW:
+      const { id, titulo, descripcion } = action.payload;
+      const fecha = new Date().toISOString().slice(0, 10);
+      const updatedReviews = state.reviews.map((review) => {
+        if (review.id === id) {
+          return {
+            ...review,
+            titulo,
+            descripcion,
+            fecha,
+          };
+        }
+        return review;
+      });
+      return {
+        ...state,
+        reviews: updatedReviews,
+      };
     case ORDER_FILTER:
       return {
         ...state,
-        products: action.payload,
+        products: [...action.payload],
       };
     case SET_PRODUCT_SEARCH:
       return {
@@ -249,6 +258,11 @@ export default function rootReducer(state = initialState, action) {
         ...state,
         allClients: [...action.payload],
       };
+    case DELETE_CLIENT:
+      return {
+        ...state,
+        deletedClient: action.payload,
+      };
     case GET_MP_LINK:
       return {
         ...state,
@@ -276,19 +290,19 @@ export default function rootReducer(state = initialState, action) {
     //     ...state,
     //     createdOrderId: action.payload,
     //   };
-		case CHANGE_LABEL:
-			return {
-				...state,
-				labels: {
-					Graph: false,
-					Clients: false,
-					Products: false,
-					Reviews: false,
-					Orders: false,
-					[action.payload]: true,
-				},
-			};
-		default:
-			return { ...state };
-	}
+    case CHANGE_LABEL:
+      return {
+        ...state,
+        labels: {
+          Graph: false,
+          Clients: false,
+          Products: false,
+          Reviews: false,
+          Orders: false,
+          [action.payload]: true,
+        },
+      };
+    default:
+      return { ...state };
+  }
 }

@@ -28,8 +28,7 @@ const LoginForm = ({ handleCloseModal }) => {
   const [canLogin, setCanLogin] = useState(false);
   const navigate = useNavigate();
   const [token, setToken] = useState("");
-  const [passError, setPassError] = useState(false)
-
+  const [passError, setPassError] = useState(false);
 
   const handleRememberPassword = () => {
     setRememberPassword(!rememberPassword);
@@ -65,16 +64,14 @@ const LoginForm = ({ handleCloseModal }) => {
         localStorage.setItem("email", user.email);
 
         handleCloseModal();
-      } else {
-        setPassError(true)
-        console.log(passError);
-        console.log("Contraseña incorrecta");
+        window.location.reload();
       }
     } catch (error) {
+      setPassError(true)      
       console.log(error);
     }
   };
-
+  
   const SignInWithGoogle = async () => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
@@ -97,6 +94,7 @@ const LoginForm = ({ handleCloseModal }) => {
       localStorage.setItem("email", user.email);
       setValue(user.email);
       handleCloseModal();
+      window.location.reload();
     } catch (error) {}
   };
 
@@ -118,8 +116,10 @@ const LoginForm = ({ handleCloseModal }) => {
   useEffect(() => {
     if (user && value === "") {
       localStorage.setItem("user", JSON.stringify(user));
-    }
+    } 
   }, [user]);
+
+  console.log(passError);
 
   const validarEmail = (email) => {
     const patron = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -129,24 +129,26 @@ const LoginForm = ({ handleCloseModal }) => {
   return (
     <div>
       <div className="form-outline mb-4">
-      <label className="form-label" htmlFor="typeEmailX-2">
+        <label className="form-label" htmlFor="typeEmailX-2">
           Email
         </label>
         <input
           type="email"
           name="email"
           id="typeEmailX-2"
-          className={`form-control form-control-lg ${validEmail ? "" : "is-invalid"}`}
+          className={`form-control form-control-lg ${
+            validEmail ? "" : "is-invalid"
+          }`}
           onChange={handleChange}
         />
-        
+
         {!validEmail && (
           <div className="invalid-feedback">Correo electrónico inválido</div>
         )}
       </div>
 
       <div className="form-outline mb-4">
-      <label className="form-label" htmlFor="typePasswordX-2">
+        <label className="form-label" htmlFor="typePasswordX-2">
           Password
         </label>
         <input
@@ -154,11 +156,11 @@ const LoginForm = ({ handleCloseModal }) => {
           name="password"
           id="typePasswordX-2"
           className={`form-control form-control-lg ${
-            validPassword ? "" : "is-invalid"
+            validPassword && !passError ? "" : "is-invalid"
           }`}
           onChange={handleChange}
         />
-        
+        {passError && (<span className="invalid-feedback">Invalid Password</span>)}
         {!validPassword && (
           <div className="invalid-feedback">
             La contraseña debe tener al menos 6 caracteres
