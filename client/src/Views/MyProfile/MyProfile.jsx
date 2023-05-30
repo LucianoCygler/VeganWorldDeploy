@@ -57,13 +57,13 @@ const MyData = () => {
     imagen,
   } = user;
   const [editMode, setEditMode] = useState(false);
-  const [editedName, setEditedName] = useState(nombre || "");
-  const [editedSurname, setEditedSurname] = useState(apellido || "");
-  const [editedEmail, setEditedEmail] = useState(email || "");
-  const [editedPhone, setEditedPhone] = useState(telefono || "");
-  const [editedCity, setEditedCity] = useState(ciudad || "");
-  const [editedDNI, setEditedDNI] = useState(dni || "");
-  const [editedAddress, setEditedAddress] = useState(direccion || "");
+  const [editedName, setEditedName] = useState(user?.nombre || "");
+  const [editedSurname, setEditedSurname] = useState(user?.apellido || "");
+  const [editedEmail, setEditedEmail] = useState(user?.email || "");
+  const [editedPhone, setEditedPhone] = useState(user?.telefono || "");
+  const [editedCity, setEditedCity] = useState(user?.ciudad || "");
+  const [editedDNI, setEditedDNI] = useState(user?.dni || "");
+  const [editedAddress, setEditedAddress] = useState(user?.direccion || "");
   const [profileImage, setProfileImage] = useState(null);
   const [selectedUser, setselectedUser] = useState(user);
   const emailCurrent = localStorage.getItem("email");
@@ -135,7 +135,7 @@ const MyData = () => {
     if (user) {
       dispatch(getClientData(user.id));
     }
-  }, [selectedUser]);
+  }, [selectedUser, editMode]);
 
   return (
     <div>
