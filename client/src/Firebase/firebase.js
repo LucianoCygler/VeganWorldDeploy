@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
-import firebaseConfig from "./firebaseConfig";
 const firebaseConfig = {
   apiKey: "AIzaSyCLNsFsX6qUg-NNZ084fjZpkPa5SHu2QZk",
   authDomain: "veganworld-2aef9.firebaseapp.com",
