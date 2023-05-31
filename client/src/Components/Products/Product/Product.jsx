@@ -30,6 +30,7 @@ function Product({ nombre, imagen, precio, stock, descripcion, id }) {
 
   useEffect(() => {
     for (const item of favorites) {
+      console.log(item.Product.id);
       if (id == item.Product.id) setIsFav(true);
     }
   }, []);
@@ -47,11 +48,12 @@ function Product({ nombre, imagen, precio, stock, descripcion, id }) {
         Pop_up(
           "success",
           "Product added",
-          "You can find your products in Cart!"
+          "You can find your products in Cart!",
+          "top"
         );
       })
       .catch(({ message }) => {
-        Pop_up("info", "Product added", message);
+        Pop_up("info", "Product added", message, "top");
       });
   };
 

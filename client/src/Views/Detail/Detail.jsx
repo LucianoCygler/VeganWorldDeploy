@@ -22,6 +22,7 @@ function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userON = localStorage.getItem("email");
 
   const [product] = useSelector((state) => state.product);
   const cart = useSelector((state) => state.cart);
@@ -145,14 +146,7 @@ function Detail() {
                     color="white"
                     textShadow="2px 2px 4px rgba(0, 0, 0, 0.4)"
                   >
-                    {product.descripcion}Lorem ipsum dolor sit amet, consectetur
-                    adipiscing elit. Donec vel egestas dolor, nec dignissim
-                    metus. Donec augue elit, rhoncus ac sodales id, porttitor
-                    vitae est. Donec laoreet rutrum libero sed pharetra. Donec
-                    vel egestas dolor, nec dignissim metus. Donec augue elit,
-                    rhoncus ac sodales id, porttitor vitae est. Donec laoreet
-                    rutrum libero sed pharetra. Duis a arcu convallis, gravida
-                    purus eget, mollis diam.
+                    {product.descripcion}
                   </Text>
                   <hr></hr>
                   <Text
@@ -208,7 +202,11 @@ function Detail() {
                 >
                   Add To Cart
                 </Button>
-                <CreateReview product_id={product_id} cliente_id={user.id} />
+                {userON ? (
+                  <CreateReview product_id={product_id} cliente_id={user.id} />
+                ) : (
+                  ""
+                )}
               </Box>
             </Grid>
           </Box>

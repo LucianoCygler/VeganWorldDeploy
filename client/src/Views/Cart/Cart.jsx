@@ -99,19 +99,19 @@ function Cart() {
           dispatch(createOrder(order)).then((data) => {
             localStorage.setItem("orderId", data.id);
           });
-
+          //, an E-mail has been sent to your address with the order details.
           Pop_up(
             "success",
             "Order Ceated",
-            "You can find your orders in MyOrders!",
-            "An E-mail has been sent to your address with the order details."
+            `You can find your orders in MyOrders!`,
+            "top"
           );
           setIsOrderGenerated(true);
           const form = { user, order };
           dispatch(sendEmail(form, "genOrder"));
           dispatch(cleanAddress());
-        } catch ({ message }) {
-          Pop_up("error", "Failed to Create Order", message);
+        } catch ({ response }) {
+          Pop_up("error", "Failed to Create Order", response.data);
         }
         break;
       case "delete":
@@ -384,54 +384,75 @@ function Cart() {
                       {" "}
                       <Box>
                         <>
-                          <Box marginBottom={"1em"}>
-                            {address == "" ? (
-                              <>
-                                {" "}
-                                <InfoOutlineIcon
-                                  color={"red"}
-                                  marginRight={1.5}
-                                />
-                                <Text display={"inline"} color={"red"}>
-                                  Complete your addres first
-                                </Text>
-                              </>
-                            ) : (
-                              <>
-                                {" "}
-                                <InfoOutlineIcon
-                                  color={"green"}
-                                  marginRight={1.5}
-                                />
-                                <Text display={"inline"} color={"green"}>
-                                  Once the order is created, you will be
-                                  reditected to the payment window.
-                                </Text>
-                              </>
-                            )}
-                          </Box>
-                          {address !== "" ? (
-                            <>
-                              {!isOrderGenerated ? (
-                                <Button
-                                  color={"teal"}
-                                  onClick={handleClick}
-                                  name="generateOrder"
-                                >
-                                  Generate order
-                                </Button>
+                          {" "}
+                          {email ? (
+                            <Box marginBottom={"1em"}>
+                              {address == "" ? (
+                                <>
+                                  {" "}
+                                  <InfoOutlineIcon
+                                    color={"red"}
+                                    marginRight={1.5}
+                                  />
+                                  <Text display={"inline"} color={"red"}>
+                                    Complete your addres first
+                                  </Text>
+                                </>
                               ) : (
-                                <Button
-                                  onClick={handleClick}
-                                  name="pay"
-                                  color={"teal"}
-                                >
-                                  Redirecting...
-                                </Button>
+                                <>
+                                  {" "}
+                                  <InfoOutlineIcon
+                                    color={"green"}
+                                    marginRight={1.5}
+                                  />
+                                  <Text display={"inline"} color={"green"}>
+                                    Once the order is created, you will be
+                                    reditected to the payment window.
+                                  </Text>
+                                </>
                               )}
-                            </>
+                            </Box>
                           ) : (
-                            <AddressPopUp />
+                            ""
+                          )}
+                          {email ? (
+                            <Box>
+                              {" "}
+                              {address !== "" ? (
+                                <>
+                                  {!isOrderGenerated ? (
+                                    <Button
+                                      color={"teal"}
+                                      onClick={handleClick}
+                                      name="generateOrder"
+                                    >
+                                      Generate order
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      onClick={handleClick}
+                                      name="pay"
+                                      color={"teal"}
+                                    >
+                                      Redirecting...
+                                    </Button>
+                                  )}
+                                </>
+                              ) : (
+                                <AddressPopUp />
+                              )}
+                            </Box>
+                          ) : (
+                            <Box mt={"2em"}>
+                              {" "}
+                              <InfoOutlineIcon
+                                color={"red"}
+                                marginRight={1.5}
+                              />
+                              <Text display={"inline"} color={"red"}>
+                                You must be signed in to create your order{" "}
+                              </Text>
+                            </Box>
                           )}
                         </>
                       </Box>
