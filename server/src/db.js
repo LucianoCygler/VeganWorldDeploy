@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT, POSTGRES_URL } = process.env;
 
 const { Sequelize } = require("sequelize");
 
@@ -15,8 +15,8 @@ const PageReviewModel = require("./models/PageReview");
 const sequelize = new Sequelize(
   //`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/VeganWorld`,
   // `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
-  "postgres://default:3hWIV4kwPNgA@ep-jolly-breeze-34443513-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb",
-
+  //"postgres://default:3hWIV4kwPNgA@ep-jolly-breeze-34443513-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb",
+  POSTGRES_URL,
   {
     logging: false,
     native: false,
