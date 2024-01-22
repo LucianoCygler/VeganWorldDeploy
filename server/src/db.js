@@ -15,7 +15,7 @@ const PageReviewModel = require("./models/PageReview");
 const sequelize = new Sequelize(
   //`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/VeganWorld`,
   // `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
-  "postgresql://postgres:k6Ju1z6CakDNC75Si1uO@containers-us-west-27.railway.app:6746/railway",
+  "postgres://default:3hWIV4kwPNgA@ep-jolly-breeze-34443513-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb",
 
   {
     logging: false,
