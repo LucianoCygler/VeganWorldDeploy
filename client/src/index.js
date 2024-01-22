@@ -10,7 +10,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 import axios from "axios";
 
-axios.defaults.baseURL = "https://veganworlddeploy-production.up.railway.app/";
+axios.defaults.baseURL = "https://vegan-world-deploy-gwu8.vercel.app/";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
